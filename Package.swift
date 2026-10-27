@@ -5,9 +5,12 @@ let package = Package(
     name: "HaLowSwift",
     platforms: [.macOS(.v13)],
     products: [
-        .executable(name: "halow-probe", targets: ["HaLowProbe"])
+        .executable(name: "halow-probe", targets: ["HaLowProbe"]),
+        .executable(name: "HaLowSwift", targets: ["HaLowApp"])
     ],
     targets: [
-        .executableTarget(name: "HaLowProbe")
+        .target(name: "HaLowCore"),
+        .executableTarget(name: "HaLowProbe", dependencies: ["HaLowCore"]),
+        .executableTarget(name: "HaLowApp", dependencies: ["HaLowCore"])
     ]
 )

@@ -2,11 +2,22 @@
 
 Native Swift tools for configuring REUMAR/Taixin-compatible Wi-Fi HaLow Ethernet bridges on macOS.
 
-The first milestone is a working **read-only command-line prototype**. It discovers a bridge on a selected network adapter and reads its role, SSID, channel bandwidth, channel list, configured transmit power, security mode, and wireless connection state. A SwiftUI configuration editor is planned.
+The native **SwiftUI macOS window** discovers bridges on a selected network adapter and displays their role, SSID, channel bandwidth, channel list, configured transmit power, security mode, and wireless connection state. It supports refresh, cancellation, response details, and local JSON snapshot export. The companion command-line reader uses the same shared transport.
 
 The prototype has been compiled and tested against a connected REUMAR bridge. Discovery and all seven queries succeeded. Eight protocol checks also passed. Configuration writes and firmware operations are not implemented.
 
-## Build and run
+## Launch the graphical app
+
+```sh
+bash scripts/build-app.sh
+open "dist/HaLow Swift.app"
+```
+
+The build script creates a locally signed development app with a native window and app icon. It scans an active Ethernet adapter on launch. Choose another adapter in the sidebar when needed. Snapshot exports contain the device identifier and SSID and are saved only when requested.
+
+The window currently displays live settings. Configuration editing and firmware operations are not implemented. This local development build is not a notarized or sandboxed distribution build.
+
+## Command-line reader
 
 Requires macOS and an installed Swift toolchain, supplied by Xcode or the Xcode command-line tools. The Swift package declares Swift tools 5.9 or newer; the package was built with the installed Xcode compiler.
 
@@ -38,7 +49,7 @@ The bridge's NetAT protocol uses UDP port 56789 and a small binary header around
 
 The command allowlist contains seven reads. The executable cannot change configuration, reboot, reset, or flash firmware. It does not read passwords or keys, although JSON output includes device identifiers and the SSID. Keep captures local unless deliberately anonymized.
 
-The transport currently uses fixed response windows, retries silent reads once, and joins multipart replies in arrival order. It is a CLI prototype; a GUI needs asynchronous execution and cancellation, interface enumeration, capability detection, and signed-app network permission validation.
+The transport currently uses fixed response windows, retries silent reads once, and joins multipart replies in arrival order. The GUI runs socket work on a separate actor and supports cancellation between transactions. Closing a pending operation can take up to the current transaction timeout. Firmware capability detection and distribution signing/sandbox validation remain future work.
 
 ## Project notes
 
