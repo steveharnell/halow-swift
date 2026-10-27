@@ -1,0 +1,21 @@
+.DS_Store
+.build/
+.swiftpm/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+
+# Local device captures and firmware research stay outside source control.
+device/
+captures/
+private/
+snapshot*.json
+*-snapshot.json
+*-configuration.json
+*.pcap
+*.pcapng
+*.bin
+*.zip
+*.7z
+work/
+outputs/
